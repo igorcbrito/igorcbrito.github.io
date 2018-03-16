@@ -1,0 +1,90 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the side navigation */
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+}
+
+
+/* Side navigation links */
+.sidenav a {
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color on hover */
+.sidenav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Style the content */
+.content {
+    margin-left: 200px;
+    padding-left: 20px;
+}
+
+
+/* seu estilo */
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header, footer {
+    padding: 1em;
+    color: black;
+    background-color: #7FFFD4;
+    clear: left;
+    text-align: center;
+  border: 1px solid black;
+}
+
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+    background-color: #7FFFD4;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+   
+nav ul a {
+    text-decoration: none;
+}
+
+article {
+    margin-left: 200px;
+    border-left: 0px solid gray;
+    padding: 1em;
+    overflow: hidden;
+    background-color: #FFFAFA;
+  img {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+}
+}
+
+  

@@ -76,9 +76,25 @@
 
       <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
         <div class="resume-content">
-          <h3 class="mb-0">Exercício 3.2 - parte 1</h3>
+          <h3 class="mb-0">Exercício 3.2.1</h3>
           <p>Caso existam mais de 255 objetos na cena, o processo de rotulação estará comprometido devido ao uso do tipo de dado como uchar, esse tipo é um char sem sinal, que representa com 8 bits valores de 0 a 255. Como a rotulação usa a representação de cor(tons de cinza) como ferramenta para distinguir os objetos na cena, caso o número seja maior que 255 não se pode garantir a correta rotulação.
               Uma forma de resolver este problema é mudar o tipo de dado usado para representar a cor, se por exemplo utilizarmos um unsigned int de 32 bits que representa valores de 0 a 65.535, aumentamos significativamente a capacidade de rotular mais objetos na imagem.</p>
+        </div>
+      </div>
+
+      <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+        <div class="resume-content">
+          <h3 class="mb-0">Exercício 4.2.1</h3>
+          <p>Neste exercício, foi proposto a realização de uma equalização em um vídeo capturado pela webcam do computador em tempo real, considerando o processamento das imagens em tons de cinza.
+
+            Sendo assim, foi tomado como base o código presente no arquivo histogram.cpp e após a captura das imagens pela webcam, foi feito uma conversão de cores da fonte de imagem para uma escala de tons de cinza utilizando a função cvtColor(image, imageGrayscale, cv::COLOR_RGB2GRAY, 0); do opencv.
+            
+            Logo em seguida, foi utilizada a função equalizeHist(imageGrayscale, imageGrayscale); que realiza a equalização do histograma da imagem.
+            Vale salientar que todo o processamento feito nas imagens ocorreu quadro a quadro do vídeo.
+            
+            Como resultado, nota-se um aumento no contraste da imagem, mas que em algumas situações causa o efeito de falso contorno, como na imagem abaixo.
+            
+            Repare, que durante a transição de uma cena escura para uma clara, é produzido um contorno no fundo da imagem que não existe, de fato.</p>
         </div>
       </div>
 

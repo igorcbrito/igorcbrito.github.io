@@ -87,6 +87,108 @@
               Uma forma de resolver este problema é mudar o tipo de dado usado para representar a cor, se por exemplo utilizarmos um unsigned int de 32 bits que representa valores de 0 a 65.535, aumentamos significativamente a capacidade de rotular mais objetos na imagem.</p>
         </div>
       </div>
+        
+            <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+        <div class="resume-content">
+          <h3 class="mb-0">Exercício 3.2.2</h3>
+          <p>Podemos dividir a resolução desse problema em 3 partes principais:<br>
+		&#x2192; Remoção das bolhas que tocam nas bordas<br>
+		&#x2192; Rotulação das bolhas<br>
+		&#x2192; Contagem de buracos<br> </p>
+		A imagem é composta por um fundo preto representado pelo valor 0, e bolhas brancas representadas pelo valor 255.<br><br>
+		<img src="dca0445-images/bolhas.png"
+                class="center"
+                width="441"
+                height="312">
+		O trecho abaixo foi usado para percorrer as bordas da imagem, fixando o X e percorrendo o Y, varremos a borda direita e esquerda da imagem. A mesma lógica é seguida para percorrer as bordas superior e inferior, só que desta vez fixando o Y e percorrendo o X. Ao varrer as bordas da imagem e encontrando valores iguais a 255, encontramos uma bolha e que ela se encontra na borda, para apagar foi chamado a função <code>floodFill</code> pintando a cor de fundo.
+			<pre><code> 
+			  // excluir objetos das bordas
+			  // percorrer as bordas e execultar o floodfill, quando achar uma bolha que esta na bordar colorir com o fundo
+			  nobjects=0;
+			  for(int i=0; i<height; i++){ // percorrendo as linhas ( o y) 
+			    if(image.at<uchar>(i,0) == 255){
+				// achou um objeto
+				p.x=0;
+				p.y=i;
+			  		// preenche o objeto com a cor de fundo
+					  cv::floodFill(image,p,0);
+			    } 
+			    if(image.at<uchar>(i,height-1) == 255){
+				// achou um objeto
+				p.x=height-1;
+				p.y=i;
+			  		// preenche o objeto com a cor de fundo
+					  cv::floodFill(image,p,0);
+			    }  
+			  } 
+			  for(int j=0; j<width; j++){
+			    if(image.at<uchar>(0,j) == 255){
+				// achou um objeto
+				p.x=j;
+				p.y=0;
+			  		// preenche o objeto com a cor de fundo
+					  cv::floodFill(image,p,0);
+			    }
+			    if(image.at<uchar>(width-1,j) == 255){
+				// achou um objeto
+				p.x=j;
+				p.y=width-1;
+			  		// preenche o objeto com a cor de fundo
+					  cv::floodFill(image,p,0);
+			    }  
+			  }
+			</code>
+			</pre>	
+
+			<img src="dca0445-images/labeling-edges.png"
+		        class="center"
+		        width="441"
+		        height="312">
+			
+			Foi feito a contagem e rotulação das bolhas em tons de cinza usando a função <code>floodFill</code>, acrescentando 1 tom a mais para cada valor, ao final o contador será igual a cor da ultima bolha.
+			<img src="dca0445-images/labeling_gray.png"
+		        class="center"
+		        width="441"
+		        height="312">
+			Na etapa final o programa vai pintar a cor de fundo de branco, se diferenciando dos buracos em preto e das bolhas em cinza, dessa forma percorre-se a imagem em busta cos valores iguais a 0(buraco),um teste condicional é usado para garantir que uma bolha com 2 ou mais buracos não seja contada duas vezes. Ao final pinta-se de branco as bolhas já contadas com buraco, restando somente as sem buraco. O valor das contagens é feito subtraindo o total de bolhas das bolhas com buraco.
+			<pre><code>
+			  // Agora pintamos o fundo da imagem, de outra cor
+			  // Pintando de branco, o fundo vai se diferenciar dos buracos(preto), e das bolhas(cinza)
+			  // O ponto 0,0 faz parte do fundo
+			  p.x=0;
+			  p.y=0;
+			  cv::floodFill(image,p,255);
+
+			  // Com o fundo branco podemos percorrer a imagem procurando buracos(pretos), e realizar a contagem.
+			  int bolhas = 0;
+			  for(int i=0; i<height; i++){
+			    for(int j=0; j<width; j++){
+			      if((int)image.at<uchar>(i,j) == 0 && (int)image.at<uchar>(i,j-1) != 255){
+				bolhas++;
+				p.x=j;
+				p.y=i;
+				cv::floodFill(image,p,255);
+				p.x=j-1;
+				p.y=i;
+				cv::floodFill(image,p,255);
+			      }
+			      else if((int)image.at<uchar>(i,j) == 0){
+				std::cout << "1pizza2";
+				p.x=j;
+				p.y=i;
+				floodFill(image,p,255);
+			      }
+			    }  
+			  }
+			</code></pre>	
+			<img src="dca0445-images/ex3.2.png"
+		        class="center"
+		        width="441"
+		        height="312">
+ 		
+        </div>
+      </div>
+
 
       <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
         <div class="resume-content">

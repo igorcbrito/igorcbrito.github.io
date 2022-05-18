@@ -98,8 +98,8 @@
 		A imagem é composta por um fundo preto representado pelo valor 0, e bolhas brancas representadas pelo valor 255.<br><br>
 		<img src="dca0445-images/bolhas.png"
                 class="center"
-                width="441"
-                height="312">
+                width="256"
+                height="256">
 		O trecho abaixo foi usado para percorrer as bordas da imagem, fixando o X e percorrendo o Y, varremos a borda direita e esquerda da imagem. A mesma lógica é seguida para percorrer as bordas superior e inferior, só que desta vez fixando o Y e percorrendo o X. Ao varrer as bordas da imagem e encontrando valores iguais a 255, encontramos uma bolha e que ela se encontra na borda, para apagar foi chamado a função <code>floodFill</code> pintando a cor de fundo.
 			<pre><code> 
 			  // excluir objetos das bordas
@@ -142,14 +142,14 @@
 
 			<img src="dca0445-images/labeling-edges.png"
 		        class="center"
-		        width="441"
-		        height="312">
+		        width="256"
+		        height="256">
 			
 			Foi feito a contagem e rotulação das bolhas em tons de cinza usando a função <code>floodFill</code>, acrescentando 1 tom a mais para cada valor, ao final o contador será igual a cor da ultima bolha.
 			<img src="dca0445-images/labeling_gray.png"
 		        class="center"
-		        width="441"
-		        height="312">
+		        width="256"
+		        height="256">
 			Na etapa final o programa vai pintar a cor de fundo de branco, se diferenciando dos buracos em preto e das bolhas em cinza, dessa forma percorre-se a imagem em busta cos valores iguais a 0(buraco),um teste condicional é usado para garantir que uma bolha com 2 ou mais buracos não seja contada duas vezes. Ao final pinta-se de branco as bolhas já contadas com buraco, restando somente as sem buraco. O valor das contagens é feito subtraindo o total de bolhas das bolhas com buraco.
 			<pre><code>
 			  // Agora pintamos o fundo da imagem, de outra cor
@@ -183,8 +183,8 @@
 			</code></pre>	
 			<img src="dca0445-images/ex3.2"
 		        class="center"
-		        width="441"
-		        height="312">
+		        width="250"
+		        height="74">
  		
         </div>
       </div>

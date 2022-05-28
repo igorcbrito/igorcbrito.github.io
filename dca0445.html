@@ -227,6 +227,61 @@
         </div>
       </div>
 
+
+      <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+        <div class="resume-content">
+          <h3 class="mb-0">Exercício 4.2.2</h3>
+          <p>Utilizando o programa exemplos/histogram.cpp como referência disponível no site <a href="https://agostinhobritojr.github.io/tutorial/pdi/#_exerc%C3%ADcios_3">Introdução ao processamento digital de imagens com OpenCV</a> </p>
+            de Agostinho Brito, modificamos o código para implementar um detector de movimento por meio do histograma.
+            Alguns pontos importantes podem ser descritos:
+            &#x2192; O histograma calcula o número de ocorrências de determinada cor.<br>
+            &#x2192; Foi escolhido então a componente da cor azul, uma componente só é suficiente para detectar o movimento<br>
+            &#x2192; Ao detectar um movimento o programa deve avisar.<br>
+
+            Desta forma a implementação usou o código que calculava o histograma de um video, frame a frame e atualizava o valor plotando o histograma,
+            foi implementado uma etapa de calibração que apartir do frame inicial + 1, calculava para o canal azul e salvava na variável <code>calibration_threshold</code> o menor valor dos 100 primeiros frames,
+            depois um fator de segurança de 95% diminuia ainda mais esse limiar.
+            Esta etapa de calibraçãose dá por conta do ruído existente na captura da imagem pela câmera, se o valor for muito pequeno pode existir uma falsa detecção de movimento.
+
+            Após ser calibrado o programa continua em loop, comparando o valor do histograma do frame atual com o valor do frame passado, se essa comparação for maior que <code>calibration_threshold</code>, foi detectado movimento.
+            Ultilizamos a função <code> compareHist(histB, oldHist, cv::HISTCMP_CORREL)</code>, de forma que a comparação seja feita pela correlação entre os histogramas, retornando valores entre 0 e 1, com o primeiro para totalmente diferentes e o segundo para iguais.
+            O trecho abaixo refere-se como foi implementado esta parte de detecção:
+            <pre><code> 
+              // Vamos usar o canal azul para identificar o movimento
+              // Apenas uma componente de cor é suficiente
+              // primeiro capturamos a imagem estática para calibrar o programa, pois devido ao ruído da câmera podemos ter 'falsa detecção'
+          
+              // calibração --> as primeiras 100 imagens serão usadas para calibrar
+              
+              if(firstImage==true){
+                std::cout << std::endl << std::endl;
+                std::cout << "Deixe a camera estática para calibração  " << std::endl;
+                std::cout << "As primeiras 100 imagens serão usadas  " << std::endl;
+              }
+          
+              if(firstImage == false){
+                hist_comp = compareHist(histB, oldHist, cv::HISTCMP_CORREL);
+                  if(cont<100){
+                    if(calibration_threshold > hist_comp)  calibration_threshold = hist_comp;
+                    cont++;
+                    if(cont == 100){
+                      calibration_threshold = calibration_threshold * 0.95; // 95% --> safety margin
+                      std::cout << "Calibrado com limiar de: "<< calibration_threshold << std::endl;
+                    }
+                  }else{
+                    if( hist_comp < calibration_threshold){
+                        std::cout << "MOVIMENTO DETECTADO!!!  \a" << std::endl;
+                    }
+                  }
+                  
+              }
+            </pre></code> 
+            <img src="dca0445-images/tesla.gif" alt="this slowpoke moves"  width="250" />
+            
+        </div>
+      </div>
+
+
       <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
         <div class="resume-content">
           <h3 class="mb-0">Exercício 5.2</h3>

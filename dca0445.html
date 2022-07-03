@@ -311,6 +311,39 @@
         </div>
       </div>
 
+      <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+        <div class="resume-content">
+          <h3 class="mb-0">Exercício 7.2</h3>
+          <p>Um filtro homomórfico é capaz de realizar a normalização do brilho e o aumento do brilho de uma imagem no domínio da frequência.
+            Aliando os conceitos de iluminância e reflectância à transformada de Fourier, foi possível separar essas componentes e trata-las ajustando os parâmetros
+            da função do filtro homomórfico no domínio da frequência. 
+            <br> Os conceitos de iluminância e reflectância podem ser definidos da seguinte forma:</br>
+            <ul>
+              <li>Iluminância: é a luz que é incidida e apresenta variações lentas (baixas frequências);</li>
+              <li>Reflectância: é a luz que é refletida, é uma propriedade do material e apresenta variações rápidas (altas frequências).</li>
+            </ul>
+            
+            <br> A função do filtro do homomórfico pode ser representada pela equação abaixo:</br>
+          </p>
+
+          <img src="dca0445-images/funchomo.png"
+          class="center"
+          width="428"
+          height="76">
+          
+          <p>Para a implementação do filtro, foi utilizado como base o código dft.cpp fornecido pelo professor. Em seguida, a função do filtro homomórfico foi
+            portada para c++ substituindo o antigo filtro ideal que já estava implementado no código. Foram criadas novas trackbars para o ajuste dos parâmetros da função. <br>
+            O resultado pode ser visto no gif abaixo:
+          </p>
+            
+            
+            <img src="dca0445-images/gif72.gif"
+                class="center"
+                width="518"
+                height="518">
+          </div>
+      </div>
+
     </section>
       <p> <b>Link contendo os <a href="https://github.com/igorcbrito/dca0445">códigos</a> implementados nas atividades. </p></b>
 

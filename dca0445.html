@@ -332,11 +332,16 @@
           height="76">
           
           <p>Para a implementação do filtro, foi utilizado como base o código dft.cpp fornecido pelo professor. Em seguida, a função do filtro homomórfico foi
-            portada para c++ substituindo o antigo filtro ideal que já estava implementado no código. Foram criadas novas trackbars para o ajuste dos parâmetros da função. <br>
-            O resultado pode ser visto no gif abaixo:
+            portada para c++ substituindo o antigo filtro ideal que já estava implementado no código.<br>
+            O calculo da função do filtro homomórfico leva em consideração, principalmente, os parâmetros gama de alta e baixa frequência e também a transformada discreta
+            de Fourier da imagem otimizada por meio do padding para que suas dimensões sejam as menores potências de 2 necessárias. A função homomófica implementada no código pode ser vista abaixo:
           </p>
-            
-            
+          <img src="dca0445-images/funcHomoPort.png"
+          class="center"
+          width="715"
+          height="195">
+
+          <p>O resultado pode ser visto no gif abaixo:</p>
             <img src="dca0445-images/gif72.gif"
                 class="center"
                 width="518"

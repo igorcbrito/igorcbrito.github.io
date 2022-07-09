@@ -238,19 +238,19 @@
           <h3 class="mb-0">Exercício 4.2.2</h3>
           <p>Utilizando o programa exemplos/histogram.cpp como referência disponível no site <a href="https://agostinhobritojr.github.io/tutorial/pdi/#_exerc%C3%ADcios_3">Introdução ao processamento digital de imagens com OpenCV</a> </p>
             de Agostinho Brito, modificamos o código para implementar um detector de movimento por meio do histograma.
-            Alguns pontos importantes podem ser descritos:
+            Alguns pontos importantes podem ser descritos:<br>
             &#x2192; O histograma calcula o número de ocorrências de determinada cor.<br>
             &#x2192; Foi escolhido então a componente da cor azul, uma componente só é suficiente para detectar o movimento<br>
             &#x2192; Ao detectar um movimento o programa deve avisar.<br>
 
-            Desta forma a implementação usou o código que calculava o histograma de um video, frame a frame e atualizava o valor plotando o histograma,
+            <p>Desta forma a implementação usou o código que calculava o histograma de um video, frame a frame e atualizava o valor plotando o histograma,<br>
             foi implementado uma etapa de calibração que apartir do frame inicial + 1, calculava para o canal azul e salvava na variável <code>calibration_threshold</code> o menor valor dos 100 primeiros frames,
             depois um fator de segurança de 95% diminuia ainda mais esse limiar.
-            Esta etapa de calibraçãose dá por conta do ruído existente na captura da imagem pela câmera, se o valor for muito pequeno pode existir uma falsa detecção de movimento.
+            Esta etapa de calibraçãose dá por conta do ruído existente na captura da imagem pela câmera, se o valor for muito pequeno pode existir uma falsa detecção de movimento.</p>
 
-            Após ser calibrado o programa continua em loop, comparando o valor do histograma do frame atual com o valor do frame passado, se essa comparação for maior que <code>calibration_threshold</code>, foi detectado movimento.
-            Ultilizamos a função <code> compareHist(histB, oldHist, cv::HISTCMP_CORREL)</code>, de forma que a comparação seja feita pela correlação entre os histogramas, retornando valores entre 0 e 1, com o primeiro para totalmente diferentes e o segundo para iguais.
-            O trecho abaixo refere-se como foi implementado esta parte de detecção:
+           <p>Após ser calibrado o programa continua em loop, comparando o valor do histograma do frame atual com o valor do frame passado, se essa comparação for maior que <code>calibration_threshold</code>, foi detectado movimento.
+            Ultilizamos a função <code> compareHist(histB, oldHist, cv::HISTCMP_CORREL)</code>, de forma que a comparação seja feita pela correlação entre os histogramas, retornando valores entre 0 e 1, com o primeiro para totalmente diferentes e o segundo para iguais.</p>
+           <p>O trecho abaixo refere-se como foi implementado esta parte de detecção:</p>
             <pre><code> 
               // Vamos usar o canal azul para identificar o movimento
               // Apenas uma componente de cor é suficiente
@@ -267,14 +267,14 @@
                   <h3 class="mb-0">Exercício 4.2.1</h3>
                   <p>Neste exercício, foi proposto a realização de uma equalização em um vídeo capturado pela webcam do computador em tempo real, considerando o processamento das imagens em tons de cinza.
         
-                    Sendo assim, foi tomado como base o código presente no arquivo histogram.cpp e após a captura das imagens pela webcam, foi feito uma conversão de cores da fonte de imagem para uma escala de tons de cinza utilizando a função cvtColor(image, imageGrayscale, cv::COLOR_RGB2GRAY, 0); do opencv.
+                    Sendo assim, foi tomado como base o código presente no arquivo histogram.cpp e após a captura das imagens pela webcam, foi feito uma conversão de cores da fonte <br> 
+                    de imagem para uma escala de tons de cinza utilizando a função cvtColor(image, imageGrayscale, cv::COLOR_RGB2GRAY, 0); do opencv.
                     
                     Logo em seguida, foi utilizada a função equalizeHist(imageGrayscale, imageGrayscale); que realiza a equalização do histograma da imagem.
                     Vale salientar que todo o processamento feito nas imagens ocorreu quadro a quadro do vídeo.
-                    
                     Como resultado, nota-se um aumento no contraste da imagem, mas que em algumas situações causa o efeito de falso contorno, como na imagem abaixo.
                     
-                    Repare, que durante a transição de uma cena escura para uma clara, é produzido um contorno no fundo da imagem que não existe, de fato.</p>
+                    Repare, que durante a transição de uma cena escura para uma clara, é produzido um contorno no fundo da imagem que não existe, de fato.<br></p>
         
                     <img src="dca0445-images/4.2.1.jpeg"
                         class="center"
@@ -329,6 +329,43 @@
         </div>
       </div>
 
+      <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+        <div class="resume-content">
+          <h3 class="mb-0">Exercício 7.2</h3>
+          <p>Um filtro homomórfico é capaz de realizar a normalização do brilho e o aumento do contraste de uma imagem no domínio da frequência.
+            Aliando os conceitos de iluminância e reflectância à transformada de Fourier, foi possível separar essas componentes e trata-las ajustando os parâmetros
+            da função do filtro homomórfico no domínio da frequência. 
+            <br> Os conceitos de iluminância e reflectância podem ser definidos da seguinte forma:</br>
+            <ul>
+              <li>Iluminância: é a luz que é incidida e apresenta variações lentas (baixas frequências);</li>
+              <li>Reflectância: é a luz que é refletida, é uma propriedade do material e apresenta variações rápidas (altas frequências).</li>
+            </ul>
+            
+            <br> A função do filtro do homomórfico pode ser representada pela equação abaixo:</br>
+          </p>
+
+          <img src="dca0445-images/funchomo.png"
+          class="center"
+          width="428"
+          height="76">
+          
+          <p>Para a implementação do filtro, foi utilizado como base o código dft.cpp fornecido pelo professor. Em seguida, a função do filtro homomórfico foi
+            portada para c++ substituindo o antigo filtro ideal que já estava implementado no código.<br>
+            O calculo da função do filtro homomórfico leva em consideração, principalmente, os parâmetros gama de alta e baixa frequência e também a transformada discreta
+            de Fourier da imagem otimizada por meio do padding para que suas dimensões sejam as menores potências de 2 necessárias. A função homomófica implementada no código pode ser vista abaixo:
+          </p>
+          <img src="dca0445-images/funcHomoPort.png"
+          class="center"
+          width="715"
+          height="195">
+
+          <p>O resultado pode ser visto no gif abaixo:</p>
+            <img src="dca0445-images/gif72.gif"
+                class="center"
+                width="518"
+                height="518">
+          </div>
+      </div>
 
 
 

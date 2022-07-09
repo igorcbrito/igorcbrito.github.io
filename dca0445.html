@@ -471,47 +471,6 @@
           </div>
       </div>
 
-      <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-        <div class="resume-content">
-          <h3 class="mb-0">Exercício 9.2</h3>
-          <p>O k-means é um algoritmo de agrupamento não determinístico que consiste na atribuição de k centróides que representam agrupamentos e, ao longo de rodadas, a posição desses centróides 
-            é recalculada com base na distância euclidiana para os pontos no espaço. 
-            A posição relativa entre os pontos e cada centróide determina a qual grupo pertence pertence cada um dos pontos. 
-            O algoritmo executa até que se atinja o número máximo de rodadas ou até que os centróides não tenham mais sua posição modificada de forma significativa.
-            Em síntese, o algoritmo do k-means determina um agrupamento inicial de dados e, ao ser executado, a região desses clusters se ajusta de maneira que os 
-            indivíduos com maior semelhança sejam agrupados da melhor forma possível. <br><br>
-            
-            No exercício proposto, foi utilizado como base o código do k-means que foi cedido pelo professor e em seguida dois parâmetros foram alterados:</p>
-
-            <ul>
-              <li>nRodadas foi alterado seu valor de 8 para 1;</li>
-              <li>o parâmetro KMEANS_PP_CENTERS foi alterado para KMEANS_RANDOM_CENTERS.</li>
-            </ul>
-
-            <p>Em seguida, foi criado um loop para que o algoritmo de clusterização rodasse 10 vezes seguidas e gerasse a mesma quantidade de imagens para serem analisadas. <br>
-
-              As imagens de entrada e a primeira execução sem a alteração dos parâmetros podem ser vistas abaixo:</p>
-
-          <div class="row justify-content-center align-items-center">
-            <div class="column">
-              <img src="dca0445-images/cristal/cristal.jpeg" alt="Snow" style="width:100%" width="240"
-              height="320">
-            </div>
-            <div class="column">
-              <img src="dca0445-images/cristal/cristal-antes-kmeans.jpeg" alt="Forest" style="width:100%" width="240"
-              height="320">
-            </div>
-        </div>
-
-        <p><br>Após a alteração dos parâmetros foi possível criar uma animação que mostra bem as diferenças entre as imagens geradas ao longo das 10 exercuções do k-means.</p>
-        <img class="justify-content-center align-items-center" src="dca0445-images/cristal/cristal-depois-kmeans.gif" alt="Snow" width="480"
-        height="640">
-
-        <p><br>É possível notar que as imagens geradas possuem uma distinção significativa entre suas tonalidades que correspondem à mudança de posicionamento e atribuição de seus clusters. 
-          Tal disparidade é observada devido à alteração do parâmetro KMEANS_PP_CENTERS para KMEANS_RANDOM_CENTERS, que faz com que a atribuição inicial dos centróides deixe de ser especifícica para que 
-          se torne aleatória. Ou seja, o primeiro posicionamento dos centros é definido de maneira randômica e, a partir desse posicionamento aleatório, os centros são ajustados, gerando no 
-          final da execução os resultados diferentes.
-        </p>
 
 
     </section>

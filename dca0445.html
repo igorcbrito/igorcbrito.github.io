@@ -329,48 +329,109 @@
         </div>
       </div>
 
+
+
+
+
       <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
         <div class="resume-content">
-          <h3 class="mb-0">Exercício 7.2</h3>
-          <p>Um filtro homomórfico é capaz de realizar a normalização do brilho e o aumento do contraste de uma imagem no domínio da frequência.
-            Aliando os conceitos de iluminância e reflectância à transformada de Fourier, foi possível separar essas componentes e trata-las ajustando os parâmetros
-            da função do filtro homomórfico no domínio da frequência. 
-            <br> Os conceitos de iluminância e reflectância podem ser definidos da seguinte forma:</br>
+          <h3 class="mb-0">Exercício 8.3</h3>
+          <p>Foi implementado um programa chamado <code>cannypoints.cpp</code> com base nos programas <code>canny.cpp</code> e <code>pontilhismo.cpp</code> disponível em <a href="https://agostinhobritojr.github.io/tutorial/pdi/#_exerc%C3%ADcios_3">Introdução ao processamento digital de imagens com OpenCV</a>
+          . A ideia é usar canny para detectar as bordas da imagem e de acordo com uns parâmetros de ajuste, melhorar a qualidade do desenho criado no formato pointilhista. Os parâmetros que podem ser ajustados por meio de uma <code>Trackbar</code> são:
+          </br>
             <ul>
-              <li>Iluminância: é a luz que é incidida e apresenta variações lentas (baixas frequências);</li>
-              <li>Reflectância: é a luz que é refletida, é uma propriedade do material e apresenta variações rápidas (altas frequências).</li>
+              <li>Threshold: Refere-se a o valor da limiar T1 e T2 do detectro de bordas de canny, configurados da forma que o valor de T2 é 3 vezes o valor de T1;</li>
+              <li>Raio: Configura o tamanho do raio dos círculos que serão desenhados nos pontos onde o algoritmo de Canny detectar bordas.</li>
+              <li>Jitter: Define uma janela aleatória de X pixels, onde o centro é deslocado, criando mais ou menos aleatoriedade no ponto;</li>
             </ul>
             
-            <br> A função do filtro do homomórfico pode ser representada pela equação abaixo:</br>
+            <br> O programa segue algumas etapas bem definidas, iniciando com a leitura da imagem, coleta das dimensões, conversão para tons de cinza e criação de uma matriz que será a imagem de saída com as mesmas dimensões da imagem de entrada preenchida com branco. </br>
           </p>
+          <pre><code>
+            int main(int argc, char** argv){
+              int width, height;
+            
+              image= imread(argv[1],cv::IMREAD_COLOR);
+              if(!image.data) cout << "Erro na abertura da imagem." << endl;
+              cvtColor(image,image2, cv::COLOR_BGR2GRAY);
+              imwrite("imggray.jpg", image2);
+              
+              width=image.size().width;
+              height=image.size().height;
+            
+              points = Mat(height, width, CV_8UC3, Scalar(255,255,255));
+          </pre></code>
 
-          <img src="dca0445-images/funchomo.png"
+          <p> A imagem de entrada escolhida foi:</p>
+          <img src="dca0445-images/citroen-c4-wrc.png"
           class="center"
-          width="428"
-          height="76">
+          width="768"
+          height="513">
           
-          <p>Para a implementação do filtro, foi utilizado como base o código dft.cpp fornecido pelo professor. Em seguida, a função do filtro homomórfico foi
-            portada para c++ substituindo o antigo filtro ideal que já estava implementado no código.<br>
-            O calculo da função do filtro homomórfico leva em consideração, principalmente, os parâmetros gama de alta e baixa frequência e também a transformada discreta
-            de Fourier da imagem otimizada por meio do padding para que suas dimensões sejam as menores potências de 2 necessárias. A função homomófica implementada no código pode ser vista abaixo:
+          <p>Como definido anteriormente, a imagem de entrada é convertida em tons de cinza, isso é nescessario para a entrada do detector de bordas de canny,
+            resultando na imagem abaixo:<br>
           </p>
-          <img src="dca0445-images/funcHomoPort.png"
+          <img src="dca0445-images/imggray.jpg"
           class="center"
-          width="715"
-          height="195">
+          width="768"
+          height="513">
 
-          <p>O resultado pode ser visto no gif abaixo:</p>
-            <img src="dca0445-images/gif72.gif"
+          <p>São implementados ainda na função <code>main</code> o calculo do range com relação ao <code>STEP</code>
+            definido com valor igual a 4, e criação das 3 Trackbar.<br>
+          </p>
+          
+          <p>Na primeira vez que o programa é executado, ou quando algum dos 3 parametros das Trackbar é alterado,
+            o programa re-execulta esta etapa que consiste em gerar uma imagem evidenciando as bordas detectadas por canny, esta imagem tem a mesma dimensão da imagem original, então: <br>
+          </p>
+          <li>Escolhe X,Y com um certo gral de aleatoriedade (Jitter);</li>
+          <li>Olha para a imagem da borda de canny, se existir uma borda, desenha circulos com raio definido pelo usuario;</li>
+          <li>Se não, desenha os circulos com padrão default;</li>
+          <li>Mostra a imagem de saída em outra janela para o usuario ajustar como deseja.</li>
+          
+          <p>O trecho descrito pode ser visto abaixo:</p>
+          <pre><code>
+            void on_trackbar_canny(int, void*){
+              Canny(image2, border, top_slider, 3*top_slider);
+              imshow("Canny Points", border);
+            
+              random_shuffle(xrange.begin(), xrange.end());
+              
+              for(auto i : xrange){
+                random_shuffle(yrange.begin(), yrange.end());
+                for(auto j : yrange){
+            
+                  x = i+rand()%(2*(top_jitter+1))-(top_jitter+1)+1;
+                  y = j+rand()%(2*(top_jitter+1))-(top_jitter+1)+1;
+                
+                  if(border.at<uchar>(i, j) != 0){ // encontrado uma região de borda por canny 
+                    colors = image.at<Vec3b>(x,y);
+                    circle(points, cv::Point(y,x),top_slider2, CV_RGB(colors[2],colors[1],colors[0]), -1, CV_8UC3);
+                  }else{
+                    colors = image.at<Vec3b>(x,y);
+                    circle(points, cv::Point(y,x),RAIO, CV_RGB(colors[2],colors[1],colors[0]), -1, CV_8UC3);
+                  }
+                }
+              }
+              
+               imshow("Canny_points output",points);
+            }
+          </pre></code>
+
+          <p>O exemplo da configuração pode ser visto no gif </p>
+            <img src="dca0445-images/c4.gif"
                 class="center"
-                width="518"
-                height="518">
+                width="690"
+                height="388">
+
+              <p>Ao fechar o programa, a imagem final é salva no diretório, como a imagem abaixo:<br>
+              </p>
+              <img src="dca0445-images/pontos.jpg"
+              class="center"
+              width="768"
+              height="513">
+
           </div>
       </div>
-
-
-
-
-
       
 
       <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">

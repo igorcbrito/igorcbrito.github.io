@@ -491,10 +491,188 @@
           Tal disparidade é observada devido à alteração do parâmetro KMEANS_PP_CENTERS para KMEANS_RANDOM_CENTERS, que faz com que a atribuição inicial dos centróides deixe de ser especifícica para que 
           se torne aleatória. Ou seja, o primeiro posicionamento dos centros é definido de maneira randômica e, a partir desse posicionamento aleatório, os centros são ajustados, gerando no 
           final da execução os resultados diferentes.
-        </p>
+        </p><br><br>
+
+
+        <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+          <div class="resume-content">
+            <h3 class="mb-0">Projeto da unidade 3 - Reconhecimento de faces com eigenfaces</h3>
+
+            <h4>O objetivo</h4>
+
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Como proposta de trabalho para a terceira unidade da disciplina de Processamento Digital de Imagens (PDI), 
+              optou-se por executar um sistema de reconhecimento facial utilizando eigenfaces. A ideia do projeto é construir um <i>dataset próprio</i>, 
+              transformar estas imagens em uma imagem só utilizando a técnica de eigenfaces, e por fim treinar o sistema utilizando rótulos de forma 
+              que ele possa quando encontrar uma imagem nova comparar com o banco de dados e retornar a face conhecida. As eigenfaces utilizam como base um dos conteúdos 
+              ministrados nas aulas de PDI, o PCA (<i>Principal Component Analysis</i>), então a ideia é expor uma aplicação prática do conteúdo visto em sala de aula.<br><br></p>
+
+              <h4>Eigenfaces</h4>
+
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Eigenfaces é uma abordagem utilizada por Sirovich e Kirby (1987) que visa gerar uma face média 
+                de acordo com um conjunto de imagens faciais e que tem aplicação na resolução de problemas de 
+                visão computacional relacionados a reconhecimento facial. 
+                As eigenfaces são conjuntos de eigenvectores utilizados, normalmente, para reconhecimento facial. 
+                De forma resumida, os eigenvectors, também conhecidos como vetores de características, são vetores 
+                associados a sistemas de equações lineares, estes vetores derivam da matriz de covariância formada pelas imagens de faces do conjunto de dados.
+              </p><br>
+
+              <figure>
+                <img src="dca0445-images/projetopdi/Faces.png"
+                class="center"
+                width="736"
+                height="218">
+
+                <figcaption>Imagens obtidas com algoritmos de eigenfaces. Fonte: Ox0c0de. Disponível em: http://www.0xc0de.net/2011/07/eigenfaces-with-opencv-2.html</figcaption>
+              </figure>
+              <br>
+
+              <h4>PCA</h4>
+
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O PCA (<i>Principal Component Analysis</i>) é uma técnica de redução de dimensionalidade que é capaz de extrair informações relevantes das imagens. O PCA é aplicado para eigenfaces de maneira que consegue otimizar a quantidade de vetores de característica 
+                dando ênfase aqueles que possuem características pouco semelhantes, de maneira a diminuir a quantidade de informação semelhante 
+                e facilitar os cálculos.
+              </p><br>
+
+              <h4>Geração de eigenfaces</h4>
+
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Em uma etapa de base, foi utilizado um algoritmo que é capaz de gerar uma eigenface dado um conjunto de imagens de entrada.
+                O conjunto de dados inicial era composto por 25 imagens faciais com resolução 480x640 em posições variadas como na imagem abaixo:
+              </p><br>
+
+              <figure>
+                <img src="dca0445-images/projetopdi/datasetGeracao.png"
+                class="center"
+                width="471"
+                height="301">
+                <figcaption><i>Dataset</i> contendo 25 imagens faciais.</figcaption>
+              
+              </figure><br>
+
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O algoritmo gerador de eigenfaces em C++ realiza a leitura das imagens do conjunto de dados e as coloca em uma matriz, 
+                em seguida executa o PCA com base na matriz de imagens. Logo depois, os eigenvectores são encontrados.
+              </p><br>
+
+              <figure>
+                <img src="dca0445-images/projetopdi/calculoPCA.png"
+                class="center"
+                width="385"
+                height="325">
+                <figcaption>Trecho de código do PCA.</figcaption>
+              </figure><br>
+
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As eigenfaces também podem ser modificadas a partir dos pesos do vetor de características que as compõem. 
+                No código utilizado neste trabalho, foram implementadas <i>trackbars</i> para o peso de cada eigenvector partindo 
+                da imagem média calculada anteriormente.
+              </p><br>
+
+              <figure>
+                <img src="dca0445-images/projetopdi/pesos.png"
+                class="center"
+                width="406"
+                height="308">
+                <figcaption>Trecho de código para controle dos pesos dos eigenvectors.</figcaption>
+              </figure>
+
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Os resultados obtidos com o processo geração de eigenfaces pode ser visualizado nas imagens abaixo:
+              </p><br>
+
+              <figure>
+                <img src="dca0445-images/projetopdi/eigenigor.png"
+                class="center"
+                width="480"
+                height="541">
+
+                <figcaption>Eigenface com a média das faces.</figcaption><br>
+
+                <img src="dca0445-images/projetopdi/eigenigor2.png"
+                class="center"
+                width="490"
+                height="375">
+
+                <figcaption>Eigenface com pesos dos eigenvectors alterados</figcaption>
+              </figure><br>
+
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;É possível notar que, com a alteração dos pesos, o resultado se distancia da imagem média e tende a ressaltar 
+                características presentes em outra imagem.
+              </p>
+
+              <h4>Reconhecimento facial utilizando eigenfaces</h4>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O reconhecimento facial é composto por 3 etapas, começando pela transformação da imagem a ser analisada pelos passos descritos acima 
+                criando um vetor de face, posteriormente é aplicado uma técnica de classificação que compara a distância do novo vetor com os vetores 
+                do espaço que temos como dataset, e por fim estas distâncias são analisadas comparando com um threshold pré-estabelecido. 
+              </p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Se a nova face pertence a um indivíduo cujo o rosto foi armazenado no banco de dados, o valor retornado será menor que o threshold. 
+                Testa-se a distância para todas as faces armazenadas, se todos os testes falharem, trata-se de uma face desconhecida. O modelo de 
+                classificação utilizado foi o support vector machine(SVM), como trata-se de um modelo supervisionado as eigenfaces devem conter os 
+                rótulos para o treinamento.
+              </p><br>
+
+              <figure>
+                <img src="dca0445-images/projetopdi/svm.png"
+                class="center"
+                width="572"
+                height="444">
+                <figcaption>Trecho de código do SVM para treinamento e classificação das faces.</figcaption>
+              </figure><br>
+
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As imagens do dataset são no formato pgm, em tons de cinza em 8bits, 
+                a imagem de entrada deve ser tratada para que tenha as mesmas dimensões e características.
+              </p><br>
+
+              <figure>
+                <img src="dca0445-images/projetopdi/svmdataset.png"
+                class="center"
+                width="502"
+                height="302">
+                <figcaption>Trecho de código do SVM para treinamento e classificação das faces.</figcaption>
+              </figure><br>
+              
+              <h4>Conclusão</h4>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O reconhecimento de faces utilizando eigenfaces é composto por várias etapas, é um método 
+                eficaz para quando temos pouca variação nas imagens, ou seja, existem condições parecidas no momento da aquisição das imagens de 
+                dataset e das imagens a serem reconhecidas. Durante o período da geração das eigenfaces quanto mais imagens forem usadas melhor pois 
+                variando um pouco as imagens com relação a perspectiva e enquadramento aumentamos a capacidade do programa de reconhecer uma face mesmo 
+                com pequenas variações.
+                Durante a etapa de teste/validação com o nosso dataset, tivemos um problema na aquisição das imagens mesmo elas estando no mesmo formato, 
+                tamanho e escala de cinza das imagens da <i>AT&T Database of Faces</i> que retirado do kaggle e deu obteve sucesso.
+                </p><br>
+
+                <h4>Referências</h4>
+
+                <p>Sirovich, Lawrence & Kirby, M. (1987). Low-Dimensional Procedure for the Characterization of Human Faces. 
+                  Journal of the Optical Society of America. A, Optics and image science. 4. 519-24. 10.1364/JOSAA.4.000519.
+                </p>
+
+                <p>
+                  BISSI, Thelry David. <b>Reconhecimento Facial com os algoritmos Eigenfaces e Fisherfaces.</b> Orientadora: Mauricio Cunha Escarpinati. 2018. TCC (Graduação) – Curso de Bacharelado em Ciência da Computação, Faculdade de Computação, Universidade
+                  Federal de Uberlândia, Minas Gerais, 2018. Disponível em: https://repositorio.ufu.br/bitstream/123456789/22158/3/ReconhecimentoFacialAlgotimos.pdf
+                  Acesso em: 15 Jul. 2022.
+
+                </p>
+
+                <p>Eigenvector. Wolfram MathWorld, 2022. Disponível em: https://mathworld.wolfram.com/Eigenvector.html. Acesso em: 17/07/2022.</p>
+
+                <p>Reconhecimento de padrões através de Eigenfaces. 
+                  Sinfic, 2022. Disponível em: http://www.sinfic.pt/SinficWeb/displayconteudo.do2?numero=44666. Acesso em: 16/07/2022.</p>
+
+                <p>Face Recognition with OpenCV. OpenCV, 2022. Disponível em: https://docs.opencv.org/3.4/da/d60/tutorial_face_main.html. Acesso em: 15/07/2022.</p>
+
+                <p>MALLICK, Satya. Eigenface using OpenCV (C++/Python). LearnOpenCV, 2018. Disponível em: https://learnopencv.com/eigenface-using-opencv-c-python/. 
+                  Acesso em: 15/07/2022.
+                </p>
+
+                <p>TAM, Adrian. Face Recognition using Principal Component Analysis. Machine Learning Mastery, 2021. 
+                  Disponível em: https://machinelearningmastery.com/face-recognition-using-principal-component-analysis/. Acesso em: 15/07/2022.
+                </p>
+
+            </div>
+        </div>
 
 
     </section>
+
+
+    
       <p> <b>Link contendo os <a href="https://github.com/igorcbrito/dca0445">códigos</a> implementados nas atividades. </p></b>
 
     <hr class="m-0">
